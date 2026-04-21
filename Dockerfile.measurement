@@ -1,4 +1,4 @@
-FROM dhi.io/golang:1.26.2-alpine3.23-dev@sha256:0d916bcd9ca2060863389d96c8ea686d72e03ccc48ebf498be2150f21f720999 AS builder
+FROM dhi.io/golang:1.26.2-alpine3.23-dev@sha256:478ffa216735b5e2b1da36e22b508dff38e7bcc14122e94fb16bf2b1bf1f6c59 AS builder
 
 ARG TARGETARCH=amd64
 
@@ -22,7 +22,7 @@ RUN npm ci --omit=dev --no-audit --no-fund \
 # Use the Debian-based DHI runtime so we stay on the hardened image track while
 # avoiding Alpine's musl-compiled Chromium 146 renderer crash on the
 # netzbremse.de speed page.
-FROM dhi.io/node:25.9-debian13-dev@sha256:0bbd55caef39b82a64fa403b24471e4aebee6f7481cee587f290b70c7b20998c
+FROM dhi.io/node:25.9-debian13-dev@sha256:3e1859920889b4199fea91fae64c9dfcd93ef0e39659a2150e6871cb79fe84b5
 
 LABEL org.opencontainers.image.source="https://github.com/sm-moshi/netzbremse" \
   org.opencontainers.image.url="https://github.com/sm-moshi/netzbremse" \
