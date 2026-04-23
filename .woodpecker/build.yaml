@@ -6,7 +6,7 @@ when:
 steps:
   - name: restore-cache
     failure: ignore
-    image: plugins/cache:1.10@sha256:372d915b25cf0528a8757a4c03e1bd693d6acfec69288797980fb5d8c91be09c
+    image: plugins/cache:1.10@sha256:5e9f2ca336337af8f6aaaf61647d05a9ff7f2da095c76aff597e7ee615ecdb36
     settings:
       access_key:
         from_secret: garage_s3_access_key
@@ -64,7 +64,7 @@ steps:
 
   - name: rebuild-cache
     failure: ignore
-    image: plugins/cache:1.10@sha256:372d915b25cf0528a8757a4c03e1bd693d6acfec69288797980fb5d8c91be09c
+    image: plugins/cache:1.10@sha256:5e9f2ca336337af8f6aaaf61647d05a9ff7f2da095c76aff597e7ee615ecdb36
     settings:
       access_key:
         from_secret: garage_s3_access_key
