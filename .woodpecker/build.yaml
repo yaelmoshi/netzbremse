@@ -27,7 +27,7 @@ steps:
   - name: go-test
     image: dhi.io/golang:1.26.3-debian13-dev@sha256:972b3b41ae70170229bd24c019dd60465130be297739a9bb64d834c21ac1a27b
     environment:
-      GOMODCACHE: /woodpecker/src/github.com/sm-moshi/netzbremse/.go-mod-cache
+      GOMODCACHE: /woodpecker/src/git.m0sh1.cc/m0sh1/netzbremse/.go-mod-cache
     commands:
       - mkdir -p .go-mod-cache
       - go test ./...
@@ -43,11 +43,7 @@ steps:
       - event: push
         branch: main
     environment:
-      npm_config_cache: /woodpecker/src/github.com/sm-moshi/netzbremse/.npm-cache
-      GITHUB_TOKEN:
-        from_secret: github_token
-      GH_TOKEN:
-        from_secret: github_token
+      npm_config_cache: /woodpecker/src/git.m0sh1.cc/m0sh1/netzbremse/.npm-cache
     commands:
       - |
         [ -n "$APT_PROXY_HOST" ] && echo "Acquire::http::Proxy \"http://$APT_PROXY_HOST:${APT_PROXY_PORT:-3142}\";" > /etc/apt/apt.conf.d/00proxy
@@ -57,7 +53,9 @@ steps:
       - rm -f .git/config.lock
       - git config user.name "woodpecker[bot]"
       - git config user.email "woodpecker@m0sh1.cc"
-      - git remote set-url origin "https://x-access-token:${GITHUB_TOKEN}@github.com/sm-moshi/netzbremse.git"
+      - git config credential.https://git.m0sh1.cc.username "$CI_NETRC_USERNAME"
+      - git config credential.https://git.m0sh1.cc.helper '!f() { echo "password=${CI_NETRC_PASSWORD}"; }; f'
+      - git remote set-url origin "https://git.m0sh1.cc/m0sh1/netzbremse.git"
       - git fetch --tags origin
       - npm ci
       - node node_modules/.bin/semantic-release

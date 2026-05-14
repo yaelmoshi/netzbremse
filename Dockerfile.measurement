@@ -24,8 +24,8 @@ RUN npm ci --omit=dev --no-audit --no-fund \
 # netzbremse.de speed page.
 FROM dhi.io/node:26.1-debian13-dev@sha256:dab358fedea27b67cc59d3b7ef87feda2884dce86672be398e291c32433606fa
 
-LABEL org.opencontainers.image.source="https://github.com/sm-moshi/netzbremse" \
-  org.opencontainers.image.url="https://github.com/sm-moshi/netzbremse" \
+LABEL org.opencontainers.image.source="https://git.m0sh1.cc/m0sh1/netzbremse" \
+  org.opencontainers.image.url="https://git.m0sh1.cc/m0sh1/netzbremse" \
   org.opencontainers.image.title="netzbremse-measurement" \
   org.opencontainers.image.description="Netzbremse measurement collector with browser-driven submission and PostgreSQL persistence"
 

@@ -1,15 +1,7 @@
 {
-  "repositoryUrl": "https://github.com/sm-moshi/netzbremse.git",
   "branches": ["main"],
   "plugins": [
     "@semantic-release/commit-analyzer",
-    "@semantic-release/release-notes-generator",
-    [
-      "@semantic-release/github",
-      {
-        "successComment": false,
-        "failComment": false
-      }
-    ]
+    "@semantic-release/release-notes-generator"
   ]
 }

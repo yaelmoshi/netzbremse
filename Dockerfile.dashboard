@@ -13,8 +13,8 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=${TARGETARCH} go build -trimpath -ldflags="-
 
 FROM dhi.io/alpine-base:3.23@sha256:27d91b0ae2dbb1bbf89398f4ee4564a0c7a14a82c34c8cffd3b2687033a9d97a
 
-LABEL org.opencontainers.image.source="https://github.com/sm-moshi/netzbremse" \
-  org.opencontainers.image.url="https://github.com/sm-moshi/netzbremse" \
+LABEL org.opencontainers.image.source="https://git.m0sh1.cc/m0sh1/netzbremse" \
+  org.opencontainers.image.url="https://git.m0sh1.cc/m0sh1/netzbremse" \
   org.opencontainers.image.title="netzbremse-dashboard" \
   org.opencontainers.image.description="Netzbremse dashboard backed by PostgreSQL instead of shared filesystem state"
 

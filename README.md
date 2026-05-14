@@ -71,8 +71,10 @@ docker build -f Dockerfile.dashboard .
 
 ## CI and release
 
-Pushes to `main` run tests and `semantic-release`. Tags (`v*`) trigger the
-full release pipeline:
+`https://git.m0sh1.cc/m0sh1/netzbremse` is the source-of-truth repository.
+GitHub is a push mirror for GHCR and GitHub-side automation. Pushes to `main`
+run tests and `semantic-release` against Forgejo. Tags (`v*`) trigger the full
+release pipeline:
 
 1. Build release images for `linux/amd64`
 2. Push to `ghcr.io/sm-moshi/netzbremse-{measurement,dashboard}`
