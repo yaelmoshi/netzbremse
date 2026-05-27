@@ -152,11 +152,12 @@ steps:
         from_secret: github_token
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
+      - cosign signing-config create --no-default-rekor --no-default-tsa --no-default-fulcio --no-default-oidc --out /tmp/cosign-signing-config.json
       - cosign login ghcr.io -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
-      - rm -f /tmp/cosign.key
+      - cosign sign --key /tmp/cosign.key --yes --signing-config /tmp/cosign-signing-config.json --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - rm -f /tmp/cosign.key /tmp/cosign-signing-config.json
 
   - name: cosign-sign-dashboard-ghcr
     image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:c40648f14b1ebcc72216a453ef30c9265ac0c91206b6f65d2a3ba1f940ad7547
@@ -175,11 +176,12 @@ steps:
         from_secret: github_token
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
+      - cosign signing-config create --no-default-rekor --no-default-tsa --no-default-fulcio --no-default-oidc --out /tmp/cosign-signing-config.json
       - cosign login ghcr.io -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
-      - rm -f /tmp/cosign.key
+      - cosign sign --key /tmp/cosign.key --yes --signing-config /tmp/cosign-signing-config.json --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - rm -f /tmp/cosign.key /tmp/cosign-signing-config.json
 
   # ── Mirror to Harbor (parallel, each after its own GHCR sign) ──────
   - name: mirror-measurement-to-harbor
@@ -228,7 +230,7 @@ steps:
   - name: cosign-sign-measurement-harbor
     image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:c40648f14b1ebcc72216a453ef30c9265ac0c91206b6f65d2a3ba1f940ad7547
     depends_on:
-      - cosign-sign-measurement-ghcr
+      - mirror-measurement-to-harbor
     environment:
       IMAGE_REF: "harbor.m0sh1.cc/apps/netzbremse-measurement:${CI_COMMIT_TAG##v}"
       COSIGN_EXPERIMENTAL: "1"
@@ -242,16 +244,17 @@ steps:
         from_secret: harbor_token
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
+      - cosign signing-config create --no-default-rekor --no-default-tsa --no-default-fulcio --no-default-oidc --out /tmp/cosign-signing-config.json
       - cosign login harbor.m0sh1.cc -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
-      - rm -f /tmp/cosign.key measurement.sbom.spdx.json measurement.vuln.json
+      - cosign sign --key /tmp/cosign.key --yes --signing-config /tmp/cosign-signing-config.json --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - rm -f /tmp/cosign.key /tmp/cosign-signing-config.json measurement.sbom.spdx.json measurement.vuln.json
 
   - name: cosign-sign-dashboard-harbor
     image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:c40648f14b1ebcc72216a453ef30c9265ac0c91206b6f65d2a3ba1f940ad7547
     depends_on:
-      - cosign-sign-dashboard-ghcr
+      - mirror-dashboard-to-harbor
     environment:
       IMAGE_REF: "harbor.m0sh1.cc/apps/netzbremse-dashboard:${CI_COMMIT_TAG##v}"
       COSIGN_EXPERIMENTAL: "1"
@@ -265,11 +268,12 @@ steps:
         from_secret: harbor_token
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
+      - cosign signing-config create --no-default-rekor --no-default-tsa --no-default-fulcio --no-default-oidc --out /tmp/cosign-signing-config.json
       - cosign login harbor.m0sh1.cc -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
-      - rm -f /tmp/cosign.key dashboard.sbom.spdx.json dashboard.vuln.json
+      - cosign sign --key /tmp/cosign.key --yes --signing-config /tmp/cosign-signing-config.json --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes --signing-config /tmp/cosign-signing-config.json $${IMAGE_REF}
+      - rm -f /tmp/cosign.key /tmp/cosign-signing-config.json dashboard.sbom.spdx.json dashboard.vuln.json
 
   # ── Notation sign Harbor (parallel, each after its own cosign) ─────
   - name: notation-sign-measurement-harbor
