@@ -153,9 +153,9 @@ steps:
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
       - cosign login ghcr.io -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes $${IMAGE_REF}
+      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
       - rm -f /tmp/cosign.key
 
   - name: cosign-sign-dashboard-ghcr
@@ -176,9 +176,9 @@ steps:
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
       - cosign login ghcr.io -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes $${IMAGE_REF}
+      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
       - rm -f /tmp/cosign.key
 
   # ── Mirror to Harbor (parallel, each after its own GHCR sign) ──────
@@ -243,9 +243,9 @@ steps:
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
       - cosign login harbor.m0sh1.cc -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes $${IMAGE_REF}
+      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate measurement.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate measurement.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
       - rm -f /tmp/cosign.key measurement.sbom.spdx.json measurement.vuln.json
 
   - name: cosign-sign-dashboard-harbor
@@ -266,9 +266,9 @@ steps:
     commands:
       - echo "$COSIGN_KEY" > /tmp/cosign.key
       - cosign login harbor.m0sh1.cc -u "$REGISTRY_USERNAME" -p "$REGISTRY_PASSWORD"
-      - cosign sign --key /tmp/cosign.key --yes --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes $${IMAGE_REF}
-      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes $${IMAGE_REF}
+      - cosign sign --key /tmp/cosign.key --yes --tlog-upload=false --registry-referrers-mode=oci-1-1 $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type spdxjson --predicate dashboard.sbom.spdx.json --yes --tlog-upload=false $${IMAGE_REF}
+      - cosign attest --key /tmp/cosign.key --type vuln --predicate dashboard.vuln.json --yes --tlog-upload=false $${IMAGE_REF}
       - rm -f /tmp/cosign.key dashboard.sbom.spdx.json dashboard.vuln.json
 
   # ── Notation sign Harbor (parallel, each after its own cosign) ─────
