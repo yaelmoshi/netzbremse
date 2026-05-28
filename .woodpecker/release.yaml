@@ -76,7 +76,7 @@ steps:
 
   # ── Trivy scan (parallel, each after its own build) ────────────────
   - name: trivy-scan-measurement
-    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:1a98db72127d38c1773df99d691c42dfdb937a8c839d7f82e7f5263745cc5777
+    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:6ec5df532f87e67fb14dfed5a006d036dbcf10bcf993eacfb8bad3eeea7f98d3
     depends_on:
       - build-and-push-measurement
     environment:
@@ -91,7 +91,7 @@ steps:
       - trivy image --format cosign-vuln --output measurement.vuln.json $${IMAGE_REF}
 
   - name: trivy-scan-dashboard
-    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:1a98db72127d38c1773df99d691c42dfdb937a8c839d7f82e7f5263745cc5777
+    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:6ec5df532f87e67fb14dfed5a006d036dbcf10bcf993eacfb8bad3eeea7f98d3
     depends_on:
       - build-and-push-dashboard
     environment:
