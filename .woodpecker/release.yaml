@@ -185,7 +185,7 @@ steps:
 
   # ── Mirror to Harbor (parallel, each after its own GHCR sign) ──────
   - name: mirror-measurement-to-harbor
-    image: dhi.io/crane:0.21.5-debian13-dev@sha256:49c75694b4f18603df82885eb7c5a47969f956d34d8c036179bdd42799dfb50d
+    image: dhi.io/crane:0.21.5-debian13-dev@sha256:0a5ab287e329a77216db34e9e292659e2f9396a79204bfca3686b87e3d126935
     depends_on:
       - cosign-sign-measurement-ghcr
     environment:
@@ -206,7 +206,7 @@ steps:
       - crane cp "$SRC_IMAGE" "harbor.m0sh1.cc/apps/netzbremse-measurement:latest"
 
   - name: mirror-dashboard-to-harbor
-    image: dhi.io/crane:0.21.5-debian13-dev@sha256:49c75694b4f18603df82885eb7c5a47969f956d34d8c036179bdd42799dfb50d
+    image: dhi.io/crane:0.21.5-debian13-dev@sha256:0a5ab287e329a77216db34e9e292659e2f9396a79204bfca3686b87e3d126935
     depends_on:
       - cosign-sign-dashboard-ghcr
     environment:
