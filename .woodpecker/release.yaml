@@ -76,7 +76,7 @@ steps:
 
   # ── Trivy scan (parallel, each after its own build) ────────────────
   - name: trivy-scan-measurement
-    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:caefdb66517f23ffb0b0ccefd6a4c4f8cc64a73766cd63ffee72e6c759f89952
+    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:0c15dffa12e7383dd415fd394f1f196fe5b3b49bfbd055f57564f3f53bcca09e
     depends_on:
       - build-and-push-measurement
     environment:
@@ -91,7 +91,7 @@ steps:
       - trivy image --format cosign-vuln --output measurement.vuln.json $${IMAGE_REF}
 
   - name: trivy-scan-dashboard
-    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:caefdb66517f23ffb0b0ccefd6a4c4f8cc64a73766cd63ffee72e6c759f89952
+    image: dhi.io/trivy:0.70.0-alpine3.23-dev@sha256:0c15dffa12e7383dd415fd394f1f196fe5b3b49bfbd055f57564f3f53bcca09e
     depends_on:
       - build-and-push-dashboard
     environment:
@@ -136,7 +136,7 @@ steps:
 
   # ── Cosign sign GHCR (parallel, each after its own SBOM) ──────────
   - name: cosign-sign-measurement-ghcr
-    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:b55369e64f7aa064e0f518d75b9365e87d253f3a431687db45aeedc2a0a1cf0c
+    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:4c941c34ff4d090498ab3396504af48ea11ee6d12c7dc81516371a04a3b19cfa
     depends_on:
       - sbom-generate-measurement
     environment:
@@ -160,7 +160,7 @@ steps:
       - rm -f /tmp/cosign.key /tmp/cosign-signing-config.json
 
   - name: cosign-sign-dashboard-ghcr
-    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:b55369e64f7aa064e0f518d75b9365e87d253f3a431687db45aeedc2a0a1cf0c
+    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:4c941c34ff4d090498ab3396504af48ea11ee6d12c7dc81516371a04a3b19cfa
     depends_on:
       - sbom-generate-dashboard
     environment:
@@ -185,7 +185,7 @@ steps:
 
   # ── Mirror to Harbor (parallel, each after its own GHCR sign) ──────
   - name: mirror-measurement-to-harbor
-    image: dhi.io/crane:0.21.5-debian13-dev@sha256:0a5ab287e329a77216db34e9e292659e2f9396a79204bfca3686b87e3d126935
+    image: dhi.io/crane:0.21.6-debian13-dev@sha256:d2bfbbde453e391448f9997c44f5b1b2269b6396aa94a48139ffb0f37578d253
     depends_on:
       - cosign-sign-measurement-ghcr
     environment:
@@ -206,7 +206,7 @@ steps:
       - crane cp "$SRC_IMAGE" "harbor.m0sh1.cc/apps/netzbremse-measurement:latest"
 
   - name: mirror-dashboard-to-harbor
-    image: dhi.io/crane:0.21.5-debian13-dev@sha256:0a5ab287e329a77216db34e9e292659e2f9396a79204bfca3686b87e3d126935
+    image: dhi.io/crane:0.21.6-debian13-dev@sha256:d2bfbbde453e391448f9997c44f5b1b2269b6396aa94a48139ffb0f37578d253
     depends_on:
       - cosign-sign-dashboard-ghcr
     environment:
@@ -228,7 +228,7 @@ steps:
 
   # ── Cosign sign Harbor (parallel, each after its own mirror) ───────
   - name: cosign-sign-measurement-harbor
-    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:b55369e64f7aa064e0f518d75b9365e87d253f3a431687db45aeedc2a0a1cf0c
+    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:4c941c34ff4d090498ab3396504af48ea11ee6d12c7dc81516371a04a3b19cfa
     depends_on:
       - mirror-measurement-to-harbor
     environment:
@@ -252,7 +252,7 @@ steps:
       - rm -f /tmp/cosign.key /tmp/cosign-signing-config.json measurement.sbom.spdx.json measurement.vuln.json
 
   - name: cosign-sign-dashboard-harbor
-    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:b55369e64f7aa064e0f518d75b9365e87d253f3a431687db45aeedc2a0a1cf0c
+    image: dhi.io/cosign:3.0.6-alpine3.23-dev@sha256:4c941c34ff4d090498ab3396504af48ea11ee6d12c7dc81516371a04a3b19cfa
     depends_on:
       - mirror-dashboard-to-harbor
     environment:
@@ -277,7 +277,7 @@ steps:
 
   # ── Notation sign Harbor (parallel, each after its own cosign) ─────
   - name: notation-sign-measurement-harbor
-    image: dhi.io/notation:1.3.2-alpine3.23-dev@sha256:e59cb58f377e6390c08f3f2437845536609bc6f7980bd942e6b2055ea3131f36
+    image: dhi.io/notation:1.3.2-alpine3.23-dev@sha256:35e5526cfafc09ad3de90b1f50913f3fb1abc26fab8b37c324f1df6f0af865d5
     depends_on:
       - cosign-sign-measurement-harbor
     environment:
@@ -303,7 +303,7 @@ steps:
       - rm -rf /tmp/notation $HOME/.docker/config.json
 
   - name: notation-sign-dashboard-harbor
-    image: dhi.io/notation:1.3.2-alpine3.23-dev@sha256:e59cb58f377e6390c08f3f2437845536609bc6f7980bd942e6b2055ea3131f36
+    image: dhi.io/notation:1.3.2-alpine3.23-dev@sha256:35e5526cfafc09ad3de90b1f50913f3fb1abc26fab8b37c324f1df6f0af865d5
     depends_on:
       - cosign-sign-dashboard-harbor
     environment:
