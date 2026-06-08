@@ -4,6 +4,7 @@ import (
 	"context"
 	"embed"
 	"encoding/json"
+	"errors"
 	"io/fs"
 	"log"
 	"net/http"
@@ -91,7 +92,7 @@ func main() {
 
 	go func() {
 		log.Printf("dashboard listening on %s", dashboardConfig.ListenAddress)
-		if err := server.ListenAndServe(); err != nil && err != http.ErrServerClosed {
+		if err := server.ListenAndServe(); err != nil && !errors.Is(err, http.ErrServerClosed) {
 			log.Fatal(err)
 		}
 	}()
@@ -116,5 +117,7 @@ func writeJSON(w http.ResponseWriter, value any) {
 	w.Header().Set("Content-Type", "application/json")
 	encoder := json.NewEncoder(w)
 	encoder.SetIndent("", "  ")
-	_ = encoder.Encode(value)
+	if err := encoder.Encode(value); err != nil {
+		log.Printf("writeJSON encode error: %v", err)
+	}
 }
