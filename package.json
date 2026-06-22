@@ -11,7 +11,7 @@
     "semantic-release": "25.0.5"
   },
   "dependencies": {
-    "puppeteer": "25.1.0"
+    "puppeteer": "25.2.0"
   },
   "overrides": {
     "yauzl": "3.4.0"
