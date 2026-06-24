@@ -23,7 +23,7 @@ RUN npm ci --omit=dev --ignore-scripts --no-audit --no-fund \
 # Use the Debian-based DHI runtime so we stay on the hardened image track while
 # avoiding Alpine's musl-compiled Chromium 146 renderer crash on the
 # netzbremse.de speed page.
-FROM dhi.io/node:26.3.1-0-debian13-dev@sha256:d7e3fbe2fc480ff197c18caef573af07281cf144c51b9ee3c3557b0900517c43
+FROM dhi.io/node:26.3.1-0-debian13-dev@sha256:b858c7e126fc5206b46ee98eefec4b58c7a658c99df2e57176e214fc1888b113
 
 LABEL org.opencontainers.image.source="https://git.m0sh1.cc/m0sh1/netzbremse" \
   org.opencontainers.image.url="https://git.m0sh1.cc/m0sh1/netzbremse" \
