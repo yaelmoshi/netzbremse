@@ -33,12 +33,12 @@ steps:
       - go test ./...
 
   - name: browser-script-check
-    image: dhi.io/node:26.4.0-0-debian13-dev@sha256:06221c715825e1c3012ed5cd17b4b7743002abcda6937f0bf405354ac7a4f867
+    image: dhi.io/node:26.4.0-0-debian13-dev@sha256:97b7ee551f59c7bb689207b84cd3fd51eefc6965e0d63d65743fe4ad082d723d
     commands:
       - node --check scripts/netzbremse-browser.mjs
 
   - name: release
-    image: dhi.io/node:26.4.0-0-debian13-dev@sha256:06221c715825e1c3012ed5cd17b4b7743002abcda6937f0bf405354ac7a4f867
+    image: dhi.io/node:26.4.0-0-debian13-dev@sha256:97b7ee551f59c7bb689207b84cd3fd51eefc6965e0d63d65743fe4ad082d723d
     when:
       - event: push
         branch: main
