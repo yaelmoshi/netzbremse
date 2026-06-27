@@ -12,7 +12,7 @@ COPY cmd/dashboard ./cmd/dashboard
 COPY internal ./internal
 RUN CGO_ENABLED=0 GOOS=${TARGETOS} GOARCH=${TARGETARCH} go build -trimpath -ldflags="-s -w" -o /out/netzbremse-dashboard ./cmd/dashboard
 
-FROM dhi.io/alpine-base:3.24@sha256:f5156164366417ee97c8daca5ec9348227d5100e4eadb822a19a3793ab3e7976
+FROM dhi.io/alpine-base:3.24@sha256:037a503be3d6f50f01bde0ef366e9b9c84060a2db5781b076df40cdd706e5119
 
 LABEL org.opencontainers.image.source="https://git.m0sh1.cc/m0sh1/netzbremse" \
   org.opencontainers.image.url="https://git.m0sh1.cc/m0sh1/netzbremse" \
